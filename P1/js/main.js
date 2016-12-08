@@ -8,7 +8,6 @@ function preload(arrayOfImages) {
 }
 
 // Usage:
-
 preload([
     'images/linc1Full.png',
     'images/linc2Full.png',
@@ -51,7 +50,7 @@ function closeDisplayImage() {
     $('html').click(function () {
         $('.cloned-image').fadeOut('slow', function () {
             $(this).remove();
-			$('.full-screen').remove();
+            $('.full-screen').remove();
 
         });
 
@@ -72,22 +71,27 @@ function displayImageHeight() {
 // Displays Full Screen dialogue over central image
 function fullScreenOverlay() {
     $('.display-img').on('mouseenter', '.cloned-image, .full-screen', function () {
-        $('<h2 class="full-screen">Full Screen</h2>').prependTo('.display-img').hide().fadeIn('slow');
-
+        
+        if ($('.full-screen').length) {
+            
+            $('.full-screen').fadeIn('slow');
+        }
+        else {
+             $('<h2 class="full-screen">Full Screen</h2>').prependTo('.display-img').hide().fadeIn('slow');
+             
+        }
+        
     });
-	
-    $('.display-img').on('mouseleave', '.cloned-image', function () {
-        $('.full-screen').fadeOut('slow', function () {
-            $(this).remove();
 
-        });
+    $('.display-img').on('mouseleave', '.cloned-image', function () {
+        $('.full-screen').fadeOut('slow');
 
     });
 }
 
 //Transforms the central image into a full screen background and displays controls
 function fullScreenImg() {
-    $('.display-img').on('click','.cloned-image, .full-screen', function () {
+    $(document).off('click', '.cloned-image').on('click', '.cloned-image, .full-screen', function () {
         var clonedImage = $('.cloned-image').attr('src').slice(0, -8);
 
         for (var i = 0; i < imgArray.length; i++) {
@@ -106,20 +110,19 @@ function fullScreenImg() {
             fullScreenControls();
 
         });
-		
-		$('.full-screen').remove();
-		$('.cloned-image').remove();
-		
+
+        $('.full-screen').remove();
+        $('.cloned-image').remove();
+
     });
-	
-	
+
 }
 
 // Left and right controls when image is full screen. Allows cycling through the images.
 function fullScreenControls() {
-    $('<h2 class="exit-full-screen">Exit Full Screen</h2>').prependTo('.full-screen-image').hide().fadeIn(1000);
-    $('<div class="left-control glyphicon glyphicon-chevron-left"></div>').prependTo('.full-screen-image').hide().fadeIn(1000);
-    $('<div class="right-control glyphicon glyphicon-chevron-right"></div>').prependTo('.full-screen-image').hide().fadeIn(1000);
+    var controlElements = $('<h2 class="exit-full-screen">Exit Full Screen</h2> <div class="left-control glyphicon glyphicon-chevron-left"></div> <div class="right-control glyphicon glyphicon-chevron-right"></div>');
+
+    controlElements.prependTo('.full-screen-image').hide().fadeIn(1000);
 
     $('.exit-full-screen').on('click', function () {
         $('.full-screen-image').fadeOut('slow', function () {
@@ -130,10 +133,10 @@ function fullScreenControls() {
             for (var i = 0; i < imgArray.length; i++) {
 
                 if (imgArray[i] === currentImageName) {
-                    $('<img src="' + imgArray[i] + '1170.png" class="cloned-image">').appendTo('.display-img').hide().fadeIn('slow');
+                    $('<img src="' + imgArray[i] + '1170.png" class="cloned-image">').appendTo('.display-img');
                     displayImageHeight();
                     fullScreenOverlay();
-                    fullScreenImg();
+
                 }
 
             }
@@ -161,9 +164,7 @@ function fullScreenControls() {
 
                     $('.full-screen-image').css('background', 'url(' + imgLeft + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
 
-                }
-
-                else {
+                } else {
                     var imgLeftNext = imgLeft + "Full.png";
                     $('.full-screen-image').css('background', 'url(' + imgLeftNext + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
                 }
@@ -191,9 +192,7 @@ function fullScreenControls() {
 
                     $('.full-screen-image').css('background', 'url(' + imgRight + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
 
-                }
-
-                else {
+                } else {
                     var imgRightNext = imgRight + "Full.png";
                     $('.full-screen-image').css('background', 'url(' + imgRightNext + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
                 }

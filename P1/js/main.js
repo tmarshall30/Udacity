@@ -70,20 +70,21 @@ function displayImageHeight() {
 
 // Displays Full Screen dialogue over central image
 function fullScreenOverlay() {
-    $('.display-img').on('mouseenter', '.cloned-image, .full-screen', function () {
-        
-        if ($('.full-screen').length) {
+    var $displayImg = $('.display-img');
+
+    $displayImg.on('mouseenter', '.cloned-image, .full-screen', function () {
+        var $fullScreen = $('.full-screen');
+        if ($fullScreen.length) {
+            $fullScreen.fadeIn('slow');
             
-            $('.full-screen').fadeIn('slow');
+        } else {
+            $('<h2 class="full-screen">Full Screen</h2>').prependTo('.display-img').hide().fadeIn('slow');
+
         }
-        else {
-             $('<h2 class="full-screen">Full Screen</h2>').prependTo('.display-img').hide().fadeIn('slow');
-             
-        }
-        
+
     });
 
-    $('.display-img').on('mouseleave', '.cloned-image', function () {
+    $displayImg.on('mouseleave', '.cloned-image, .full-screen', function () {
         $('.full-screen').fadeOut('slow');
 
     });
@@ -91,11 +92,10 @@ function fullScreenOverlay() {
 
 //Transforms the central image into a full screen background and displays controls
 function fullScreenImg() {
-    $(document).off('click', '.cloned-image').on('click', '.cloned-image, .full-screen', function () {
+    $(document).off('click', '.cloned-image, .full-screen').on('click', '.cloned-image, .full-screen', function () {
         var clonedImage = $('.cloned-image').attr('src').slice(0, -8);
 
         for (var i = 0; i < imgArray.length; i++) {
-
             if (imgArray[i] === clonedImage) {
                 var fullScreenImage = clonedImage + "Full.png";
 
@@ -106,7 +106,6 @@ function fullScreenImg() {
         }
 
         $('.full-screen-image').one('mouseenter', function () {
-
             fullScreenControls();
 
         });
@@ -126,12 +125,11 @@ function fullScreenControls() {
 
     $('.exit-full-screen').on('click', function () {
         $('.full-screen-image').fadeOut('slow', function () {
-
             var currentImage = $('.full-screen-image').css('background-image');
             var currentImageURL = currentImage.replace(/"/g, '').replace('url(http:', '').replace('url(https:', '').replace('url(file:', '').replace(/\/(.*)\//, '').replace(')', '').slice(0, -8);
             var currentImageName = "images/" + currentImageURL;
+            
             for (var i = 0; i < imgArray.length; i++) {
-
                 if (imgArray[i] === currentImageName) {
                     $('<img src="' + imgArray[i] + '1170.png" class="cloned-image">').appendTo('.display-img');
                     displayImageHeight();
@@ -148,25 +146,24 @@ function fullScreenControls() {
     });
 
     $('.left-control').on('click', function () {
-        var currentImage = $('.full-screen-image').css('background-image');
+        var $fullScreenImage = $('.full-screen-image');
+        var currentImage = $fullScreenImage.css('background-image');
         var currentImageURL = currentImage.replace(/"/g, '').replace('url(http:', '').replace('url(https:', '').replace('url(file:', '').replace(/\/(.*)\//, '').replace(')', '').slice(0, -8);
         var currentImageName = "images/" + currentImageURL;
 
         for (var i = 0; i < imgArray.length; i++) {
-
             if (imgArray[i] === currentImageName) {
-
                 var imgLeft = imgArray[i - 1];
 
                 if (imgLeft === undefined) {
-
                     var imgLeft = imgArray[3] + "Full.png";
 
-                    $('.full-screen-image').css('background', 'url(' + imgLeft + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
+                    $fullScreenImage.css('background', 'url(' + imgLeft + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
 
                 } else {
                     var imgLeftNext = imgLeft + "Full.png";
-                    $('.full-screen-image').css('background', 'url(' + imgLeftNext + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
+                    $fullScreenImage.css('background', 'url(' + imgLeftNext + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
+                    
                 }
 
             }
@@ -176,25 +173,25 @@ function fullScreenControls() {
     });
 
     $('.right-control').on('click', function () {
-        var currentImage = $('.full-screen-image').css('background-image');
+        var $fullScreenImage = $('.full-screen-image');
+        var currentImage = $fullScreenImage.css('background-image');
         var currentImageURL = currentImage.replace(/"/g, '').replace('url(http:', '').replace('url(https:', '').replace('url(file:', '').replace(/\/(.*)\//, '').replace(')', '').slice(0, -8);
         var currentImageName = "images/" + currentImageURL;
 
         for (var i = 0; i < imgArray.length; i++) {
-
             if (imgArray[i] === currentImageName) {
-
                 var imgRight = imgArray[i + 1];
 
                 if (imgRight === undefined) {
-
                     var imgRight = imgArray[0] + "Full.png";
 
-                    $('.full-screen-image').css('background', 'url(' + imgRight + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
+                    $fullScreenImage.css('background', 'url(' + imgRight + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
+                    
 
                 } else {
                     var imgRightNext = imgRight + "Full.png";
-                    $('.full-screen-image').css('background', 'url(' + imgRightNext + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
+                    $fullScreenImage.css('background', 'url(' + imgRightNext + ') no-repeat fixed center center / contain').hide().fadeIn('slow');
+                    
                 }
 
             }
